@@ -1,6 +1,5 @@
 package com.company.model;
 
-import javax.xml.crypto.Data;
 import java.math.BigDecimal;
 import java.util.Date;
 

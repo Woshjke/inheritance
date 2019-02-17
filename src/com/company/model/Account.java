@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * This is like bank account of physical person
+ * bank account of physical person
  */
 public class Account {
     protected Integer id;
@@ -46,13 +46,11 @@ public class Account {
     }
 
     /**
-     *
      * @param quarter
      * @param year
-     * @return Value of tax for given quarter of qurrent year
+     * @return Value of tax for given quarter of given year
      */
     public BigDecimal getTax(int quarter, int year){
-
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.YEAR, year);
         cal.set(Calendar.MONTH, Calendar.SEPTEMBER);
@@ -68,7 +66,6 @@ public class Account {
         Date dateBefore = ca2.getTime();
 
         if(quarter == 4){
-
             BigDecimal income = new BigDecimal(0.00);
 
             for(Payment payment: payments){
@@ -83,13 +80,13 @@ public class Account {
             return tax;
         }
         else if(quarter == 3){
-
+            //todo should be implemented
         }
         else if(quarter == 2){
-
+            //todo should be implemented
         }
         else if(quarter == 1){
-
+            //todo should be implemented
         }
         return null;
     }
