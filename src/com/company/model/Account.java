@@ -13,12 +13,22 @@ public class Account {
     protected Integer id;
     protected BigDecimal sumValue;
     protected List<Payment> payments;
+    protected Integer taxRate;
 
-    public Account(){}
+    public Account() {
+    }
 
-    public Account(Integer id, BigDecimal sumValue){
+    public Account(Integer id, BigDecimal sumValue) {
         this.id = id;
         this.sumValue = sumValue;
+    }
+
+    public Integer getTaxRate() {
+        return taxRate;
+    }
+
+    public void setTaxRate(Integer tax) {
+        this.taxRate = tax;
     }
 
     public Integer getId() {
@@ -45,52 +55,103 @@ public class Account {
         this.payments = payments;
     }
 
-    /**
-     *
-     * @param quarter
-     * @param year
-     * @return Value of tax for given quarter of qurrent year
-     */
-    public BigDecimal getTax(int quarter, int year){
 
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, year);
-        cal.set(Calendar.MONTH, Calendar.SEPTEMBER);
-        cal.set(Calendar.DAY_OF_MONTH, 30);
+    private Date setDateBefore(int quarter, int year) {
+        Calendar calendarBefore = Calendar.getInstance();
+        Date dateBefore = new Date();
 
-        Date dateAfter = cal.getTime();
-
-        Calendar ca2 = Calendar.getInstance();
-        ca2.set(Calendar.YEAR, year+1);
-        ca2.set(Calendar.MONTH, Calendar.JANUARY);
-        ca2.set(Calendar.DAY_OF_MONTH, 1);
-
-        Date dateBefore = ca2.getTime();
-
-        if(quarter == 4){
-
-            BigDecimal income = new BigDecimal(0.00);
-
-            for(Payment payment: payments){
-                Date paymentDate = payment.getDate();
-                if (paymentDate.after(dateAfter) && paymentDate.before(dateBefore)){
-                    if(payment.getDestinationAccountId().equals(getId())) {
-                        income = income.add(payment.getValue());
-                    }
-                }
+        switch (quarter) {
+            case 1: {
+                calendarBefore.set(Calendar.YEAR, year);
+                calendarBefore.set(Calendar.MONTH, Calendar.APRIL);
+                calendarBefore.set(Calendar.DAY_OF_MONTH, 1);
+                dateBefore = calendarBefore.getTime();
+                break;
             }
-            BigDecimal tax = income.multiply(new BigDecimal(0.13));
-            return tax;
-        }
-        else if(quarter == 3){
+            case 2: {
+                calendarBefore.set(Calendar.YEAR, year);
+                calendarBefore.set(Calendar.MONTH, Calendar.JULY);
+                calendarBefore.set(Calendar.DAY_OF_MONTH, 1);
+                dateBefore = calendarBefore.getTime();
+                break;
+            }
+            case 3: {
+                calendarBefore.set(Calendar.YEAR, year);
+                calendarBefore.set(Calendar.MONTH, Calendar.OCTOBER);
+                calendarBefore.set(Calendar.DAY_OF_MONTH, 1);
+                dateBefore = calendarBefore.getTime();
+                break;
+            }
+            case 4: {
+                calendarBefore.set(Calendar.YEAR, year + 1);
+                calendarBefore.set(Calendar.MONTH, Calendar.JANUARY);
+                calendarBefore.set(Calendar.DAY_OF_MONTH, 1);
+                dateBefore = calendarBefore.getTime();
+                break;
+            }
 
         }
-        else if(quarter == 2){
+        return dateBefore;
+    }
 
-        }
-        else if(quarter == 1){
+    private Date setDateAfter(int quarter, int year) {
+        Calendar calendarAfter = Calendar.getInstance();
+        Date dateAfter = new Date();
 
+        switch (quarter) {
+            case 1: {
+                calendarAfter.set(Calendar.YEAR, year - 1);
+                calendarAfter.set(Calendar.MONTH, Calendar.DECEMBER);
+                calendarAfter.set(Calendar.DAY_OF_MONTH, 31);
+                dateAfter = calendarAfter.getTime();
+                break;
+            }
+            case 2: {
+                calendarAfter.set(Calendar.YEAR, year);
+                calendarAfter.set(Calendar.MONTH, Calendar.MARCH);
+                calendarAfter.set(Calendar.DAY_OF_MONTH, 31);
+                dateAfter = calendarAfter.getTime();
+                break;
+            }
+            case 3: {
+                calendarAfter.set(Calendar.YEAR, year);
+                calendarAfter.set(Calendar.MONTH, Calendar.JUNE);
+                calendarAfter.set(Calendar.DAY_OF_MONTH, 30);
+                dateAfter = calendarAfter.getTime();
+                break;
+            }
+            case 4: {
+                calendarAfter.set(Calendar.YEAR, year);
+                calendarAfter.set(Calendar.MONTH, Calendar.SEPTEMBER);
+                calendarAfter.set(Calendar.DAY_OF_MONTH, 30);
+                dateAfter = calendarAfter.getTime();
+                break;
+            }
         }
-        return null;
+        return dateAfter;
+    }
+
+    /**
+     * @param quarter - number of quarter we need
+     * @param year    - year of given period
+     * @return Value of tax for given quarter of current year
+     */
+    public BigDecimal getTax(int quarter, int year) {
+
+        BigDecimal tax;
+
+        Date dateBefore = setDateBefore(quarter, year);
+        Date dateAfter = setDateAfter(quarter, year);
+
+        BigDecimal income = new BigDecimal(0.00);
+
+        for (Payment payment : payments) {
+            Date paymentDate = payment.getDate();
+            if (paymentDate.after(dateAfter) && paymentDate.before(dateBefore) && payment.getDestinationAccountId().equals(getId()))
+                income = income.add(payment.getValue());
+        }
+
+        tax = new BigDecimal((taxRate)).multiply(income);
+        return tax;
     }
 }
