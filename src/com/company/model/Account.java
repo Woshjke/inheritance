@@ -13,7 +13,7 @@ public class Account {
     protected Integer id;
     protected BigDecimal sumValue;
     protected List<Payment> payments;
-    protected Integer taxRate;
+    protected Integer taxRate = 13;
 
     public Account() {
     }
@@ -55,103 +55,59 @@ public class Account {
         this.payments = payments;
     }
 
+    private Date generateDate(int month, int year, int dayOfMonth){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-    private Date setDateBefore(int quarter, int year) {
-        Calendar calendarBefore = Calendar.getInstance();
-        Date dateBefore = new Date();
-
-        switch (quarter) {
-            case 1: {
-                calendarBefore.set(Calendar.YEAR, year);
-                calendarBefore.set(Calendar.MONTH, Calendar.APRIL);
-                calendarBefore.set(Calendar.DAY_OF_MONTH, 1);
-                dateBefore = calendarBefore.getTime();
-                break;
-            }
-            case 2: {
-                calendarBefore.set(Calendar.YEAR, year);
-                calendarBefore.set(Calendar.MONTH, Calendar.JULY);
-                calendarBefore.set(Calendar.DAY_OF_MONTH, 1);
-                dateBefore = calendarBefore.getTime();
-                break;
-            }
-            case 3: {
-                calendarBefore.set(Calendar.YEAR, year);
-                calendarBefore.set(Calendar.MONTH, Calendar.OCTOBER);
-                calendarBefore.set(Calendar.DAY_OF_MONTH, 1);
-                dateBefore = calendarBefore.getTime();
-                break;
-            }
-            case 4: {
-                calendarBefore.set(Calendar.YEAR, year + 1);
-                calendarBefore.set(Calendar.MONTH, Calendar.JANUARY);
-                calendarBefore.set(Calendar.DAY_OF_MONTH, 1);
-                dateBefore = calendarBefore.getTime();
-                break;
-            }
-
-        }
-        return dateBefore;
+        return calendar.getTime();
     }
 
-    private Date setDateAfter(int quarter, int year) {
-        Calendar calendarAfter = Calendar.getInstance();
-        Date dateAfter = new Date();
-
+    private boolean isDateInQuarter(int quarter, int year, Date paymentDate) {
+        Date dateAfter = null;
+        Date dateBefore = null;
         switch (quarter) {
             case 1: {
-                calendarAfter.set(Calendar.YEAR, year - 1);
-                calendarAfter.set(Calendar.MONTH, Calendar.DECEMBER);
-                calendarAfter.set(Calendar.DAY_OF_MONTH, 31);
-                dateAfter = calendarAfter.getTime();
+                dateAfter = generateDate(Calendar.DECEMBER, year - 1, 31);
+                dateBefore = generateDate(Calendar.APRIL, year, 1);
                 break;
             }
             case 2: {
-                calendarAfter.set(Calendar.YEAR, year);
-                calendarAfter.set(Calendar.MONTH, Calendar.MARCH);
-                calendarAfter.set(Calendar.DAY_OF_MONTH, 31);
-                dateAfter = calendarAfter.getTime();
+                dateAfter = generateDate(Calendar.MARCH, year, 31);
+                dateBefore = generateDate(Calendar.JULY, year, 1);
                 break;
             }
             case 3: {
-                calendarAfter.set(Calendar.YEAR, year);
-                calendarAfter.set(Calendar.MONTH, Calendar.JUNE);
-                calendarAfter.set(Calendar.DAY_OF_MONTH, 30);
-                dateAfter = calendarAfter.getTime();
+                dateAfter = generateDate(Calendar.JUNE, year, 30);
+                dateBefore = generateDate(Calendar.OCTOBER, year, 1);
                 break;
             }
             case 4: {
-                calendarAfter.set(Calendar.YEAR, year);
-                calendarAfter.set(Calendar.MONTH, Calendar.SEPTEMBER);
-                calendarAfter.set(Calendar.DAY_OF_MONTH, 30);
-                dateAfter = calendarAfter.getTime();
+                dateAfter = generateDate(Calendar.SEPTEMBER, year, 30);
+                dateBefore = generateDate(Calendar.JANUARY, year + 1, 1);
                 break;
             }
         }
-        return dateAfter;
+        return paymentDate.after(dateAfter) && paymentDate.before(dateBefore);
     }
 
     /**
-     * @param quarter - number of quarter we need
-     * @param year    - year of given period
-     * @return Value of tax for given quarter of current year
+     * @param quarter - number of quarter for tax calculation
+     * @param year - year of given period
+     * @return Value of tax for given quarter of given year
      */
     public BigDecimal getTax(int quarter, int year) {
-
         BigDecimal tax;
-
-        Date dateBefore = setDateBefore(quarter, year);
-        Date dateAfter = setDateAfter(quarter, year);
-
         BigDecimal income = new BigDecimal(0.00);
 
         for (Payment payment : payments) {
             Date paymentDate = payment.getDate();
-            if (paymentDate.after(dateAfter) && paymentDate.before(dateBefore) && payment.getDestinationAccountId().equals(getId()))
+            if (isDateInQuarter(quarter, year, paymentDate) && payment.getDestinationAccountId().equals(getId()))
                 income = income.add(payment.getValue());
         }
 
-        tax = new BigDecimal((taxRate)).multiply(income);
+        tax = new BigDecimal((taxRate)).multiply(income.divide(new BigDecimal(100)));
         return tax;
     }
 }

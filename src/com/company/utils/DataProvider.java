@@ -21,8 +21,6 @@ public class DataProvider {
         return ieSimple;
     }
 
-    List<Payment> paymentList = new ArrayList<>();
-
     public DataProvider() {
         generatePaymentsForAccount();
     }
@@ -66,8 +64,8 @@ public class DataProvider {
         dateRepresentation = cal.getTime();
         buyPortraitOfSon.setDate(dateRepresentation);
 
-        buyPencilPayment.setSourceAccountId(painter.getId());
-        buyPencilPayment.setDestinationAccountId(ieSimple.getId());
+        buyPencilPayment.setSourceAccountId(ieSimple.getId());
+        buyPencilPayment.setDestinationAccountId(seller.getId());
         buyPaper.setSourceAccountId(ieSimple.getId());
         buyPaper.setDestinationAccountId(seller.getId());
         buyPortraitOfWife.setSourceAccountId(client.getId());
@@ -77,13 +75,13 @@ public class DataProvider {
         buyPortraitOfSon.setSourceAccountId(client.getId());
         buyPortraitOfSon.setDestinationAccountId(ieSimple.getId());
 
+        List<Payment> paymentList = new ArrayList<>();
+
         paymentList.add(buyPencilPayment);
         paymentList.add(buyPaper);
         paymentList.add(buyPortraitOfWife);
         paymentList.add(buyPortraitOfDaughter);
         paymentList.add(buyPortraitOfSon);
-
-        painter.setPayments(paymentList);
 
         return paymentList;
     }
@@ -138,6 +136,8 @@ public class DataProvider {
         buyPortraitOfSon.setSourceAccountId(client.getId());
         buyPortraitOfSon.setDestinationAccountId(painter.getId());
 
+        List<Payment> paymentList = new ArrayList<>();
+
         paymentList.add(buyPencilPayment);
         paymentList.add(buyPaper);
         paymentList.add(buyPortraitOfWife);
@@ -157,9 +157,5 @@ public class DataProvider {
 
     public Account getClient() {
         return client;
-    }
-
-    public List<Payment> getPaymentList() {
-        return paymentList;
     }
 }
