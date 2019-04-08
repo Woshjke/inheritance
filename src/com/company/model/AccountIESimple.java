@@ -5,6 +5,10 @@ import java.math.BigDecimal;
 public class AccountIESimple extends Account {
     public AccountIESimple(Integer id, BigDecimal sumValue) {
         super(id, sumValue);
-        setTaxRate(5);
+        if(isInPreferentialTaxZone) {
+            setTaxRate(3);
+        } else {
+            setTaxRate(5);
+        }
     }
 }
