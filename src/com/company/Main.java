@@ -8,7 +8,7 @@ import com.company.utils.DataProvider;
 public class Main {
 
     public static void main(String[] args) {
-
+//
         DataProvider dataProvider = new DataProvider();
 
         Account painter = dataProvider.getPainter();
