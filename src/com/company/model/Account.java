@@ -1,8 +1,6 @@
 package com.company.model;
 
-import javax.swing.plaf.synth.Region;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -15,9 +13,6 @@ public class Account {
     protected BigDecimal sumValue;
     protected List<Payment> payments;
     protected Integer taxRate = 13;
-
-
-
     protected String region;
     protected boolean isInPreferentialTaxZone;
 
