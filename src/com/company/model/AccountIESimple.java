@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 public class AccountIESimple extends Account {
     public AccountIESimple(Integer id, BigDecimal sumValue) {
         super(id, sumValue);
-        setTaxRate(5);
+
+            setTaxRate(5);
+
     }
 }
