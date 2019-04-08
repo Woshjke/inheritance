@@ -16,6 +16,7 @@ public class Main {
         Account ieSimple = dataProvider.getIeSimple();
         ieSimple.setInPreferentialTaxZone(true);
         ieSimple.setPayments(dataProvider.generateIESimplePayments());
+        System.out.println("LUL");
 
 
 
