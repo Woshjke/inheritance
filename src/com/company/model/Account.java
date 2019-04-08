@@ -1,5 +1,7 @@
 package com.company.model;
 
+import com.company.utils.TaxZoneUtil;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -14,6 +16,7 @@ public class Account {
     protected BigDecimal sumValue;
     protected List<Payment> payments;
     protected Integer taxRate = 13;
+    protected Region region;
     protected boolean isInPreferentialTaxZone;
 
     public Account() {
@@ -30,6 +33,17 @@ public class Account {
 
     public void setTaxRate(Integer tax) {
         this.taxRate = tax;
+    }
+
+    public Region getRegion() {
+        return region;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
+        if(TaxZoneUtil.isRegionFromPreferentialTaxZone(region)){
+            isInPreferentialTaxZone = true;
+        }
     }
 
     public boolean isInPreferentialTaxZone() {
