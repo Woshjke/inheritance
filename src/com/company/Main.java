@@ -15,6 +15,7 @@ public class Main {
         AccountIE company = new AccountIE();
         Account ieSimple = dataProvider.getIeSimple();
         ieSimple.setPayments(dataProvider.generateIESimplePayments());
+        // It's only for the testing
         ieSimple.setInPreferentialTaxZone(true);
 
         System.out.println("painter tax for 4 quarter 2018: " + painter.getTax(4, 2018));
