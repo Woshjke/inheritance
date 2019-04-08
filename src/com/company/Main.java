@@ -15,12 +15,13 @@ public class Main {
         AccountIE company = new AccountIE();
         Account ieSimple = dataProvider.getIeSimple();
         ieSimple.setPayments(dataProvider.generateIESimplePayments());
-        ieSimple.setRegion("Grodno");
+        ieSimple.setRegion("Minsk");
 
 
         System.out.println("painter tax for 4 quarter 2018: " + painter.getTax(4, 2018));
         System.out.println("Printing fixed tax for individual entrepreneur : " + company.getTax(1,2));
         System.out.println("Printing tax for individual entrepreneur in simple tax system  : " + ieSimple.getTax(4,2018));
         System.out.println(ieSimple.getRegion());
+        System.out.println(ieSimple.isInPreferentialTaxZone());
     }
 }
