@@ -15,13 +15,23 @@ public class Account {
     protected List<Payment> payments;
     protected Integer taxRate = 13;
     protected boolean isInPreferentialTaxZone;
+    protected String region;
 
     public Account() {
     }
 
-    public Account(Integer id, BigDecimal sumValue) {
+    public Account(Integer id, BigDecimal sumValue, String region) {
         this.id = id;
         this.sumValue = sumValue;
+        this.region = region;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     public Integer getTaxRate() {
