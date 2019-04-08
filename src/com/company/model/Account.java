@@ -119,6 +119,8 @@ public class Account {
             if (isDateInQuarter(quarter, year, paymentDate) && payment.getDestinationAccountId().equals(getId()))
                 income = income.add(payment.getValue());
         }
+        if (isInPreferentialTaxZone) setTaxRate(3);
+        else setTaxRate(5);
 
         tax = new BigDecimal((taxRate)).multiply(income.divide(new BigDecimal(100)));
         return tax;
