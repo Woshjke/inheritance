@@ -15,6 +15,7 @@ public class Account {
     protected List<Payment> payments;
     protected Integer taxRate = 13;
     protected Region region;
+    protected boolean isInPreferentialTaxZone;
 
     public Account() {
     }
@@ -38,6 +39,14 @@ public class Account {
 
     public void setRegion(Region region) {
         this.region = region;
+    }
+
+    public boolean isInPreferentialTaxZone() {
+        return isInPreferentialTaxZone;
+    }
+
+    public void setInPreferentialTaxZone(boolean inPreferentialTaxZone) {
+        isInPreferentialTaxZone = inPreferentialTaxZone;
     }
 
     public Integer getId() {
