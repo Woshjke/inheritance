@@ -15,13 +15,33 @@ public class Account {
     protected List<Payment> payments;
     protected Integer taxRate = 13;
     protected boolean isInPreferentialTaxZone;
+    protected String region;
 
     public Account() {
     }
 
-    public Account(Integer id, BigDecimal sumValue) {
+    public Account(Integer id, BigDecimal sumValue, String region) {
         this.id = id;
         this.sumValue = sumValue;
+        this.region = region;
+        if (region.equals("Grodno") || region.equals("Brest")) {
+            this.isInPreferentialTaxZone = true;
+        } else {
+            this.isInPreferentialTaxZone = false;
+        }
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+        if (region.equals("Grodno") || region.equals("Brest")) {
+            this.isInPreferentialTaxZone = true;
+        } else {
+            this.isInPreferentialTaxZone = false;
+        }
     }
 
     public Integer getTaxRate() {
@@ -64,7 +84,7 @@ public class Account {
         this.payments = payments;
     }
 
-    private Date generateDate(int month, int year, int dayOfMonth){
+    private Date generateDate(int month, int year, int dayOfMonth) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month);
@@ -103,7 +123,7 @@ public class Account {
 
     /**
      * @param quarter - number of quarter for tax calculation
-     * @param year - year of given period
+     * @param year    - year of given period
      * @return Value of tax for given quarter of given year
      */
     public BigDecimal getTax(int quarter, int year) {
