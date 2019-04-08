@@ -12,10 +12,10 @@ import java.util.List;
 
 public class DataProvider {
 
-    private Account painter = new Account(1, new BigDecimal(100));
-    private Account seller = new Account(2, new BigDecimal(700));
-    private Account client = new Account(3, new BigDecimal(600));
-    private Account ieSimple = new AccountIESimple(4, new BigDecimal(800));
+    private Account painter = new Account(1, new BigDecimal(100), "Grodno");
+    private Account seller = new Account(2, new BigDecimal(700), "Minsk");
+    private Account client = new Account(3, new BigDecimal(600), "Vitebsk");
+    private Account ieSimple = new AccountIESimple(4, new BigDecimal(800), "Mogilev");
 
     public Account getIeSimple() {
         return ieSimple;
