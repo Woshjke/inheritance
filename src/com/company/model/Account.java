@@ -1,5 +1,6 @@
 package com.company.model;
 
+import javax.swing.plaf.synth.Region;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -14,14 +15,30 @@ public class Account {
     protected BigDecimal sumValue;
     protected List<Payment> payments;
     protected Integer taxRate = 13;
+
+
+
+    protected String region;
     protected boolean isInPreferentialTaxZone;
+
 
     public Account() {
     }
 
-    public Account(Integer id, BigDecimal sumValue) {
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public Account(Integer id, BigDecimal sumValuem, String place) {
+        this.region = place;
         this.id = id;
         this.sumValue = sumValue;
+        if(region == "Brest" || region == "Grodno"){
+            isInPreferentialTaxZone = true;
+        }
+        else {
+            isInPreferentialTaxZone = false;
+        }
     }
 
     public Integer getTaxRate() {
