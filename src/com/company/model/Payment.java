@@ -4,11 +4,11 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class Payment {
-    public Long id;
-    public Integer destinationAccountId;
-    public Integer sourceAccountId;
-    public BigDecimal value;
-    public Date date;
+    private Long id;
+    private Integer destinationAccountId;
+    private Integer sourceAccountId;
+    private BigDecimal value;
+    private Date date;
 
     public Payment(Long id, BigDecimal value){
         this.id = id;

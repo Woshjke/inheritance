@@ -7,18 +7,28 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * bank account of physical person
+ * This is like bank account of physical person
  */
 public class Account {
     protected Integer id;
     protected BigDecimal sumValue;
     protected List<Payment> payments;
+    protected Integer taxRate = 13;
 
-    public Account(){}
+    public Account() {
+    }
 
-    public Account(Integer id, BigDecimal sumValue){
+    public Account(Integer id, BigDecimal sumValue) {
         this.id = id;
         this.sumValue = sumValue;
+    }
+
+    public Integer getTaxRate() {
+        return taxRate;
+    }
+
+    public void setTaxRate(Integer tax) {
+        this.taxRate = tax;
     }
 
     public Integer getId() {
@@ -45,49 +55,59 @@ public class Account {
         this.payments = payments;
     }
 
+    private Date generateDate(int month, int year, int dayOfMonth){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+        return calendar.getTime();
+    }
+
+    private boolean isDateInQuarter(int quarter, int year, Date paymentDate) {
+        Date dateAfter = null;
+        Date dateBefore = null;
+        switch (quarter) {
+            case 1: {
+                dateAfter = generateDate(Calendar.DECEMBER, year - 1, 31);
+                dateBefore = generateDate(Calendar.APRIL, year, 1);
+                break;
+            }
+            case 2: {
+                dateAfter = generateDate(Calendar.MARCH, year, 31);
+                dateBefore = generateDate(Calendar.JULY, year, 1);
+                break;
+            }
+            case 3: {
+                dateAfter = generateDate(Calendar.JUNE, year, 30);
+                dateBefore = generateDate(Calendar.OCTOBER, year, 1);
+                break;
+            }
+            case 4: {
+                dateAfter = generateDate(Calendar.SEPTEMBER, year, 30);
+                dateBefore = generateDate(Calendar.JANUARY, year + 1, 1);
+                break;
+            }
+        }
+        return paymentDate.after(dateAfter) && paymentDate.before(dateBefore);
+    }
+
     /**
-     * @param quarter
-     * @param year
+     * @param quarter - number of quarter for tax calculation
+     * @param year - year of given period
      * @return Value of tax for given quarter of given year
      */
-    public BigDecimal getTax(int quarter, int year){
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, year);
-        cal.set(Calendar.MONTH, Calendar.SEPTEMBER);
-        cal.set(Calendar.DAY_OF_MONTH, 30);
+    public BigDecimal getTax(int quarter, int year) {
+        BigDecimal tax;
+        BigDecimal income = new BigDecimal(0.00);
 
-        Date dateAfter = cal.getTime();
-
-        Calendar ca2 = Calendar.getInstance();
-        ca2.set(Calendar.YEAR, year+1);
-        ca2.set(Calendar.MONTH, Calendar.JANUARY);
-        ca2.set(Calendar.DAY_OF_MONTH, 1);
-
-        Date dateBefore = ca2.getTime();
-
-        if(quarter == 4){
-            BigDecimal income = new BigDecimal(0.00);
-
-            for(Payment payment: payments){
-                Date paymentDate = payment.getDate();
-                if (paymentDate.after(dateAfter) && paymentDate.before(dateBefore)){
-                    if(payment.getDestinationAccountId().equals(getId())) {
-                        income = income.add(payment.getValue());
-                    }
-                }
-            }
-            BigDecimal tax = income.multiply(new BigDecimal(0.13));
-            return tax;
+        for (Payment payment : payments) {
+            Date paymentDate = payment.getDate();
+            if (isDateInQuarter(quarter, year, paymentDate) && payment.getDestinationAccountId().equals(getId()))
+                income = income.add(payment.getValue());
         }
-        else if(quarter == 3){
-            //todo should be implemented
-        }
-        else if(quarter == 2){
-            //todo should be implemented
-        }
-        else if(quarter == 1){
-            //todo should be implemented
-        }
-        return null;
+
+        tax = new BigDecimal((taxRate)).multiply(income.divide(new BigDecimal(100)));
+        return tax;
     }
 }
