@@ -21,6 +21,5 @@ public class Main {
         System.out.println("Printing tax for individual entrepreneur in simple tax system  : " + ieSimple.getTax(4,2018));
         System.out.println(ieSimple.isInPreferentialTaxZone());
 
-
     }
 }
