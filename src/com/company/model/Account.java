@@ -27,12 +27,6 @@ public class Account {
 
     public void setRegion(String region) {
         this.region = region;
-    }
-
-    public Account(Integer id, BigDecimal sumValuem, String place) {
-        this.region = place;
-        this.id = id;
-        this.sumValue = sumValue;
         if(region == "Brest" || region == "Grodno"){
             isInPreferentialTaxZone = true;
         }
@@ -40,6 +34,11 @@ public class Account {
             isInPreferentialTaxZone = false;
         }
     }
+
+    public Account(Integer id, BigDecimal sumValuem, String place) {
+        this.id = id;
+        this.sumValue = sumValue;
+}
 
     public Integer getTaxRate() {
         return taxRate;
