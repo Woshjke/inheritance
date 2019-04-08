@@ -103,8 +103,9 @@ public class Account {
 
         for (Payment payment : payments) {
             Date paymentDate = payment.getDate();
-            if (isDateInQuarter(quarter, year, paymentDate) && payment.getDestinationAccountId().equals(getId()))
+            if (isDateInQuarter(quarter, year, paymentDate) && payment.getDestinationAccountId().equals(getId())){
                 income = income.add(payment.getValue());
+            }
         }
 
         tax = new BigDecimal((taxRate)).multiply(income.divide(new BigDecimal(100)));

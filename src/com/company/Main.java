@@ -13,6 +13,8 @@ public class Main {
 
         Account painter = dataProvider.getPainter();
         AccountIE company = new AccountIE();
+
+        //Individual Enterpreneur with simple tax system
         Account ieSimple = dataProvider.getIeSimple();
         ieSimple.setPayments(dataProvider.generateIESimplePayments());
 
