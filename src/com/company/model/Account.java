@@ -24,6 +24,9 @@ public class Account {
         this.id = id;
         this.sumValue = sumValue;
         this.region = region;
+        if (region.equals("Grodno") || region.equals("Brest")) {
+            this.setInPreferentialTaxZone(true);
+        }
     }
 
     public String getRegion() {
