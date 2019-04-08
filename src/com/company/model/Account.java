@@ -14,6 +14,7 @@ public class Account {
     protected BigDecimal sumValue;
     protected List<Payment> payments;
     protected Integer taxRate = 13;
+    protected Region region;
 
     public Account() {
     }
@@ -29,6 +30,14 @@ public class Account {
 
     public void setTaxRate(Integer tax) {
         this.taxRate = tax;
+    }
+
+    public Region getRegion() {
+        return region;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
     }
 
     public Integer getId() {
