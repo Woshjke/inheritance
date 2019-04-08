@@ -18,6 +18,8 @@ public class Main {
         ieSimple.setPayments(dataProvider.generateIESimplePayments());
         ieSimple.setRegion("Minsk");
 
+        System.out.println("Cherry pick test");
+
 
         ieSimple.setInPreferentialTaxZone(true);
         System.out.println("painter tax for 4 quarter 2018: " + painter.getTax(4, 2018));
