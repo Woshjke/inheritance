@@ -1,5 +1,7 @@
 package com.company.model;
 
+import com.company.utils.TaxZoneUtil;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,6 +41,9 @@ public class Account {
 
     public void setRegion(Region region) {
         this.region = region;
+        if(TaxZoneUtil.isRegionFromPreferentialTaxZone(region)){
+            isInPreferentialTaxZone = true;
+        }
     }
 
     public boolean isInPreferentialTaxZone() {
