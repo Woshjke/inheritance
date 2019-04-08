@@ -14,6 +14,7 @@ public class Account {
     protected BigDecimal sumValue;
     protected List<Payment> payments;
     protected Integer taxRate = 13;
+    protected boolean isInPreferentialTaxZone;
 
     public Account() {
     }
@@ -29,6 +30,14 @@ public class Account {
 
     public void setTaxRate(Integer tax) {
         this.taxRate = tax;
+    }
+
+    public boolean isInPreferentialTaxZone() {
+        return isInPreferentialTaxZone;
+    }
+
+    public void setInPreferentialTaxZone(boolean inPreferentialTaxZone) {
+        isInPreferentialTaxZone = inPreferentialTaxZone;
     }
 
     public Integer getId() {
