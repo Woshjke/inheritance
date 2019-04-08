@@ -1,10 +1,7 @@
 package com.company.model;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * This is like bank account of physical person
@@ -15,6 +12,18 @@ public class Account {
     protected List<Payment> payments;
     protected Integer taxRate = 13;
     protected boolean isInPreferentialTaxZone;
+    private String region;
+    private static List<String> preferentialTaxZone = Arrays.asList("Brest", "Grodno");
+
+    public void setRegion(String region) {
+        this.region = region;
+        isInPreferentialTaxZone=preferentialTaxZone.contains(region);
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
 
     public Account() {
     }
@@ -22,6 +31,12 @@ public class Account {
     public Account(Integer id, BigDecimal sumValue) {
         this.id = id;
         this.sumValue = sumValue;
+    }
+    public Account(Integer id, BigDecimal sumValue, String region) {
+        this.id = id;
+        this.sumValue = sumValue;
+        this.region=region;
+        isInPreferentialTaxZone=preferentialTaxZone.contains(region);
     }
 
     public Integer getTaxRate() {
