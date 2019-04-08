@@ -16,6 +16,7 @@ public class Main {
         AccountIE company = new AccountIE();
         Account ieSimple = dataProvider.getIeSimple();
         ieSimple.setPayments(dataProvider.generateIESimplePayments());
+        ieSimple.setInPreferentialTaxZone(true);
         ieSimple.setRegion(Region.MINSK);
 
         System.out.println("painter tax for 4 quarter 2018: " + painter.getTax(4, 2018));
