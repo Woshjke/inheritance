@@ -38,6 +38,10 @@ public class Account {
 
     public void setInPreferentialTaxZone(boolean inPreferentialTaxZone) {
         isInPreferentialTaxZone = inPreferentialTaxZone;
+        if (inPreferentialTaxZone==true) setTaxRate(3);
+        else setTaxRate(5);
+
+
     }
 
     public Integer getId() {
