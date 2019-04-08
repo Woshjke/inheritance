@@ -64,7 +64,7 @@ public class Account {
         this.payments = payments;
     }
 
-    private Date generateDate(int month, int year, int dayOfMonth){
+    private Date generateDate(int month, int year, int dayOfMonth) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month);
@@ -103,7 +103,7 @@ public class Account {
 
     /**
      * @param quarter - number of quarter for tax calculation
-     * @param year - year of given period
+     * @param year    - year of given period
      * @return Value of tax for given quarter of given year
      */
     public BigDecimal getTax(int quarter, int year) {
@@ -114,6 +114,9 @@ public class Account {
             Date paymentDate = payment.getDate();
             if (isDateInQuarter(quarter, year, paymentDate) && payment.getDestinationAccountId().equals(getId()))
                 income = income.add(payment.getValue());
+        }
+        if (isInPreferentialTaxZone) {
+            taxRate = 3;
         }
 
         tax = new BigDecimal((taxRate)).multiply(income.divide(new BigDecimal(100)));
